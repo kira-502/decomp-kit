@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# decomp-kit launcher: loads the shared toolchain, then runs the dk CLI.
+TC="${DK_TOOLCHAIN:-$HOME/decomp/toolchain}"
+. "$TC/env.sh"
+KIT="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+exec python3 "$KIT/dk.py" "$@"

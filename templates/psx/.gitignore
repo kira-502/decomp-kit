@@ -1,0 +1,9 @@
+/asm/
+/assets/
+/build/
+/linker/
+/work/
+/nonmatchings/
+__pycache__/
+/ghidra/
+/dk.local.json
