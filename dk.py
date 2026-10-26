@@ -697,8 +697,14 @@ def patch_pieces(p: Project) -> dict[str, str]:
 
 
 def git(p: Project, *args, check=True):
-    return run(["git", "-c", "user.name=kira-502", "-c", "user.email=kira-502@users.noreply.github.com",
-                *args], cwd=p.root, check=check)
+    """git in the project as the person running dk: commits carry their own user.name / user.email"""
+    # both set explicitly: git would otherwise make an email up from the user and host name
+    if args and args[0] == "commit" and not all(
+            subprocess.run(["git", "config", key], cwd=p.root, capture_output=True, text=True).stdout.strip()
+            for key in ("user.name", "user.email")):
+        die("git has no name and email for your commits: set them first, e.g. in the game folder\n"
+            "  git config user.name \"Your Name\"\n  git config user.email \"you@users.noreply.github.com\"")
+    return run(["git", *args], cwd=p.root, check=check)
 
 
 # ---------------------------------------------------------------- object files
